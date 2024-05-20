@@ -32,14 +32,17 @@ const getAuth = async () => {
       data: data,
     };
     const response = await axios(config);
-  } catch (error) {}
+    return response.data.access_token;
+  } catch (error) {
+    throw new Error("Xatolik yuz berdi");
+  }
 };
-
-const getCoin = async () => {
+// getAuth();
+const getCoin = async (token = null) => {
   try {
     let data = {
       taps: 5000,
-      time: Date.now() + 3600000,
+      time: Date.now(),
     };
     let config = {
       method: "post",
@@ -49,8 +52,9 @@ const getCoin = async () => {
         Host: "api.tapswap.ai",
         "x-cv": "1",
         Accept: "*/*",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjkxMzA0NzY3NCwiaWF0IjoxNzE2MTIxNjMwLCJleHAiOjE3MTYxMjUyMzB9.QGuUX6iL5o2vgTrRmtCSluZUDV6cTvVtxDS6HHmObLo",
+        Authorization: token
+          ? "Bearer " + token
+          : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjkxMzA0NzY3NCwiaWF0IjoxNzE2MTIxNjMwLCJleHAiOjE3MTYxMjUyMzB9.QGuUX6iL5o2vgTrRmtCSluZUDV6cTvVtxDS6HHmObLo",
         "Content-Id": "912974832",
         "Sec-Fetch-Site": "cross-site",
         "Accept-Language": "uz,en-GB;q=0.9,en;q=0.8",
@@ -68,27 +72,29 @@ const getCoin = async () => {
     };
 
     const response = await axios(config);
-    console.log("Success Cleamed");
-    console.log("name", response?.data?.player?.name);
-    console.log("total tabs", response?.data?.player?.stat.taps);
+
+    console.log("\n\nSuccess Cleamed");
+    console.log("profile", response?.data?.player?.full_name);
+    console.log("total tabs", response?.data?.player?.shares);
     // console.log(response.data);
     return response.data;
   } catch (error) {
-    console.log(error.response.data.message);
+    if (error?.response?.data?.message == "Unauthorized") {
+      const newToken = await getAuth();
+      if (newToken) {
+        return getCoin(newToken);
+      }
+    }
+    throw new Error("Xatolik yuz berdi");
     // console.log(error.message);
   }
 };
-getCoin();
+// getCoin();
 
-// setInterval(() => {
-//   getCoin();
-// }, 2000);
-
-// axios
-//   .request(config)
-//   .then((response) => {
-//     console.log(JSON.stringify(response.data));
-//   })
-//   .catch((error) => {
-//     console.log(error);
-//   });
+const interval = setInterval(() => {
+  try {
+    getCoin();
+  } catch (error) {
+    console.log(error.message);
+  }
+}, 10000);
