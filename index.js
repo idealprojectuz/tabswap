@@ -4,11 +4,8 @@ const express = require("express");
 const getAuth = async () => {
   try {
     let data = JSON.stringify({
-      //this is hayotbek account
-      // init_data:
-      //   "query_id=AAF6AGw2AAAAAHoAbDa_04WQ&user=%7B%22id%22%3A913047674%2C%22first_name%22%3A%22Hayotbek%22%2C%22last_name%22%3A%22%22%2C%22username%22%3A%22hayotbek_0427%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1716122262&hash=20a0e3b91ec1721a4254c19bff85d0218065eb9f2316af1ccffbdeac4d6cbbb1",
       init_data:
-        "query_id=AAEX2jsHAwAAABfaOwdwOEve&user=%7B%22id%22%3A6563813911%2C%22first_name%22%3A%22%EF%A3%BF%22%2C%22last_name%22%3A%22%22%2C%22language_code%22%3A%22uz%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1716205663&hash=f77cbd51c05ebf586744cd321d6c76fa02533169cb6e8e80366115df7365935d",
+        "query_id=AAF6AGw2AAAAAHoAbDa_04WQ&user=%7B%22id%22%3A913047674%2C%22first_name%22%3A%22Hayotbek%22%2C%22last_name%22%3A%22%22%2C%22username%22%3A%22hayotbek_0427%22%2C%22language_code%22%3A%22en%22%2C%22allows_write_to_pm%22%3Atrue%7D&auth_date=1716122262&hash=20a0e3b91ec1721a4254c19bff85d0218065eb9f2316af1ccffbdeac4d6cbbb1",
       referrer: "",
       bot_key: "app_bot_0",
     });
@@ -41,6 +38,7 @@ const getAuth = async () => {
     throw new Error("Xatolik yuz berdi");
   }
 };
+// getAuth();
 const getCoin = async (token = null) => {
   try {
     let data = {
@@ -57,7 +55,7 @@ const getCoin = async (token = null) => {
         Accept: "*/*",
         Authorization: token
           ? "Bearer " + token
-          : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjY1NjM4MTM5MTEsImlhdCI6MTcxNjIwNTk5NywiZXhwIjoxNzE2MjA5NTk3fQ.NCcTJQB2MaSB_gxCL8DAyMZwIDpcxY5iOFDtO5fGfIY",
+          : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjkxMzA0NzY3NCwiaWF0IjoxNzE2MTIxNjMwLCJleHAiOjE3MTYxMjUyMzB9.QGuUX6iL5o2vgTrRmtCSluZUDV6cTvVtxDS6HHmObLo",
         "Content-Id": "912974832",
         "Sec-Fetch-Site": "cross-site",
         "Accept-Language": "uz,en-GB;q=0.9,en;q=0.8",
@@ -88,7 +86,7 @@ const getCoin = async (token = null) => {
         return getCoin(newToken);
       }
     }
-    throw new Error("Xatolik yuz berdi");
+    return getCoin();
     // console.log(error.message);
   }
 };
@@ -98,7 +96,7 @@ const interval = setInterval(() => {
   try {
     getCoin();
   } catch (error) {
-    console.log(error.message);
+    getCoin();
   }
 }, 10000);
 
