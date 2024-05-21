@@ -1,4 +1,5 @@
 require("dotenv").config();
+const os = require("os");
 const axios = require("axios");
 const express = require("express");
 const getAuth = async () => {
@@ -101,6 +102,12 @@ const interval = setInterval(() => {
 }, 10000);
 
 const app = express();
+
+app.get("/", (req, res) => {
+  return res.json({
+    ...os.userInfo(),
+  });
+});
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
