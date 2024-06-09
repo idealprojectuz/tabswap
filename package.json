@@ -5,8 +5,6 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "humster": "node humster.js",
-    "tapswap": "node index.js",
     "dev": "nodemon index.js"
   },
   "keywords": [],
