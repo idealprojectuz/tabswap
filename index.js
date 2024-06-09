@@ -36,10 +36,10 @@ const getAuth = async () => {
     const response = await axios(config);
     return response.data.access_token;
   } catch (error) {
+    console.log(error);
     throw new Error("Xatolik yuz berdi");
   }
 };
-// getAuth();
 const getCoin = async (token = null) => {
   try {
     let data = {
@@ -101,14 +101,14 @@ const interval = setInterval(() => {
   }
 }, 10000);
 
-const app = express();
+// const app = express();
 
-app.get("/", (req, res) => {
-  return res.json({
-    ...os.userInfo(),
-  });
-});
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+// app.get("/", (req, res) => {
+//   return res.json({
+//     ...os.userInfo(),
+//   });
+// });
+// const port = process.env.PORT || 3000;
+// app.listen(port, () => {
+//   console.log(`Example app listening on port ${port}`);
+// });

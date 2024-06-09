@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "npm-run-all -p humster tapswap",
+    "humster": "node humster.js",
+    "tapswap": "node index.js",
     "dev": "nodemon index.js"
   },
   "keywords": [],
@@ -13,6 +15,7 @@
   "dependencies": {
     "axios": "^1.6.8",
     "dotenv": "^16.4.5",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "npm-run-all": "^4.1.5"
   }
 }
