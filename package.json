@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm-run-all -p humster tapswap",
+    "start": "node index.js",
     "humster": "node humster.js",
     "tapswap": "node index.js",
     "dev": "nodemon index.js"
