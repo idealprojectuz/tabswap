@@ -1,5 +1,5 @@
 const axios = require("axios");
-const getCoin = async () => {
+const humster = async () => {
   try {
     let data = {
       count: 10000,
@@ -43,8 +43,9 @@ const getCoin = async () => {
     // getCoin();
   }
 };
+module.exports = humster;
 // getCoin().then((data) => console.log(data));
-getCoin().then((data) => console.log(data));
+// getCoin().then((data) => console.log(data));
 
 // const interval = setInterval(async () => {
 //   try {
