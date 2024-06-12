@@ -1,5 +1,5 @@
 const axios = require("axios");
-const humster = async () => {
+const humster = async (token) => {
   try {
     let data = {
       count: 10000,
@@ -13,8 +13,7 @@ const humster = async () => {
       headers: {
         Host: "api.hamsterkombat.io",
         Accept: "application/json",
-        Authorization:
-          "Bearer 1716288481633FdYnAWXUspkGg6KiURxINkDl6ATalY4RnDku7PdCyoRMT1eEZQcqKPTuxvSiBLGe913047674",
+        Authorization: "Bearer " + token,
         "Sec-Fetch-Site": "same-site",
         "Accept-Language": "uz,en-GB;q=0.9,en;q=0.8",
         "Sec-Fetch-Mode": "cors",

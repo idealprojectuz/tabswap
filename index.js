@@ -105,10 +105,15 @@ const express = require("express");
 const app = express();
 
 app.get("/", async (req, res) => {
-  const data = await humster();
-  console.log(data);
-  return res.json(data);
-  // return await humster();
+  const result = await Promise.all([
+    humster(process.env.TOKEN_HAYOTBEK),
+    humster(process.env.TOKEN_NODIRA),
+    humster(process.env.TOKEN_SAMANDAR),
+    humster(process.env.TOKEN_THAILAND),
+    humster(process.env.TOKEN_HAYOTBEK_OLD),
+    humster(process.env.TOKEN_JAVOHIR),
+  ]);
+  return res.json(result);
 });
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
