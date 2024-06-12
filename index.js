@@ -116,7 +116,7 @@ app.get("/", async (req, res) => {
     humster(process.env.TOKEN_AKOBIR_MOTHER),
     humster(process.env.TOKEN_AKOBIR_MOTHER_PHONE_2),
   ]);
-  return res.json(result);
+  return res.send(JSON.stringify(result, null, 2));
 });
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
