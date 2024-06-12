@@ -112,6 +112,9 @@ app.get("/", async (req, res) => {
     humster(process.env.TOKEN_THAILAND),
     humster(process.env.TOKEN_HAYOTBEK_OLD),
     humster(process.env.TOKEN_JAVOHIR),
+    humster(process.env.TOKEN_AKOBIR),
+    humster(process.env.TOKEN_AKOBIR_MOTHER),
+    humster(process.env.TOKEN_AKOBIR_MOTHER_PHONE_2),
   ]);
   return res.json(result);
 });
