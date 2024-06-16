@@ -1,5 +1,6 @@
 require("dotenv").config();
 const humster = require("./humster");
+const pixel = require("./pixel");
 const os = require("os");
 // const axios = require("axios");
 const express = require("express");
@@ -116,6 +117,7 @@ app.get("/", async (req, res) => {
     humster(process.env.TOKEN_AKOBIR_MOTHER),
     humster(process.env.TOKEN_AKOBIR_MOTHER_PHONE_2),
     humster(process.env.TOKEN_ISLOM),
+    pixel(),
   ]);
   res.writeHead(200, "ok", { "Content-Type": "application/json" });
   return res.end(JSON.stringify(result, null, 2));
