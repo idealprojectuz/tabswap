@@ -118,6 +118,7 @@ app.get("/", async (req, res) => {
     humster(process.env.TOKEN_AKOBIR_MOTHER_PHONE_2),
     humster(process.env.TOKEN_ISLOM),
     humster(process.env.TOKEN),
+    humster(process.env.TOKEN_NARGIZA),
     pixel(),
   ]);
   res.writeHead(200, "ok", { "Content-Type": "application/json" });
