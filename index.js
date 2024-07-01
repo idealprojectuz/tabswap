@@ -4,6 +4,8 @@ const {
   hamsterSync,
   hamsterFullEnergy,
   dailybonus,
+  maxfiyKod,
+  listTask,
 } = require("./humster");
 const pixel = require("./pixel");
 const os = require("os");
@@ -16,15 +18,13 @@ const app = express();
 
 app.use(express.json());
 
-//webhook
-// app.post("/webhook", async (req, res) => {
-//   bot.handleUpdate(req.body, res);
-// });
-// bot.telegram.setWebhook(process.env.WEBHOOK);
-
-app.get("/env", async (req, res) => {
-  return res.json(process.env);
+// webhook
+app.post("/webhook", async (req, res) => {
+  bot.handleUpdate(req.body, res);
 });
+
+const url = process.env.RENDER_EXTERNAL_URL || process.env.WEBHOOK;
+bot.telegram.setWebhook(url + "/webhook");
 
 app.get("/", async (req, res) => {
   const result = await Promise.all([
@@ -65,6 +65,11 @@ app.get("/sync", async (_, res) => {
   return res.json(result);
 });
 
+// app.get("/task", async (req, res) => {
+// const result = await Promise.all([listTask(process.env.TOKEN_NARGIZA)]);
+//   return res.json(result);
+// });
+
 //every one hour
 app.get("/fullenergy", async (_, res) => {
   const result = await Promise.all([
@@ -88,30 +93,59 @@ app.get("/fullenergy", async (_, res) => {
 //every  day
 app.get("/dailybonus", async (_, res) => {
   const result = await Promise.all([
-    dailybonus(process.env.TOKEN_HAYOTBEK),
-    dailybonus(process.env.TOKEN_NODIRA),
-    dailybonus(process.env.TOKEN_SAMANDAR),
-    dailybonus(process.env.TOKEN_THAILAND),
-    dailybonus(process.env.TOKEN_HAYOTBEK_OLD),
-    dailybonus(process.env.TOKEN_JAVOHIR),
-    dailybonus(process.env.TOKEN_AKOBIR),
-    dailybonus(process.env.TOKEN_AKOBIR_MOTHER),
-    dailybonus(process.env.TOKEN_AKOBIR_MOTHER_PHONE_2),
-    dailybonus(process.env.TOKEN_ISLOM),
-    dailybonus(process.env.TOKEN),
-    dailybonus(process.env.TOKEN_NARGIZA),
+    listTask(process.env.TOKEN_HAYOTBEK),
+    listTask(process.env.TOKEN_NODIRA),
+    listTask(process.env.TOKEN_SAMANDAR),
+    listTask(process.env.TOKEN_THAILAND),
+    listTask(process.env.TOKEN_HAYOTBEK_OLD),
+    listTask(process.env.TOKEN_JAVOHIR),
+    listTask(process.env.TOKEN_AKOBIR),
+    listTask(process.env.TOKEN_AKOBIR_MOTHER),
+    listTask(process.env.TOKEN_AKOBIR_MOTHER_PHONE_2),
+    listTask(process.env.TOKEN_ISLOM),
+    listTask(process.env.TOKEN),
+    listTask(process.env.TOKEN_NARGIZA),
   ]);
   return res.json(result);
 });
-
-app.get("/maxfiysoz", async (req, res) => {});
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
 
-// bot.start((ctx) => ctx.reply("Welcome!"));
-// bot.help((ctx) => ctx.reply("Send me a sticker"));
-// bot.on("sticker", (ctx) => ctx.reply("👍"));
-// bot.hears("hi", (ctx) => ctx.reply("Hey there"));
+bot.use((ctx, next) => {
+  if (ctx.message.from.id == process.env.CHAT_ID) {
+    return next();
+  } else {
+    return ctx.reply("You are not allowed to use this bot");
+  }
+});
+
+bot.start((ctx) => ctx.reply("Hamster maxfiy kodini kiriting..."));
+
+bot.on("message", async (ctx) => {
+  const loading = await ctx.reply("⏳");
+
+  const data = await Promise.all([
+    maxfiyKod(process.env.TOKEN_HAYOTBEK, ctx.message.text),
+    maxfiyKod(process.env.TOKEN_NODIRA, ctx.message.text),
+    maxfiyKod(process.env.TOKEN_SAMANDAR, ctx.message.text),
+    maxfiyKod(process.env.TOKEN_THAILAND, ctx.message.text),
+    maxfiyKod(process.env.TOKEN_HAYOTBEK_OLD, ctx.message.text),
+    maxfiyKod(process.env.TOKEN_JAVOHIR, ctx.message.text),
+    maxfiyKod(process.env.TOKEN_AKOBIR, ctx.message.text),
+    maxfiyKod(process.env.TOKEN_AKOBIR_MOTHER, ctx.message.text),
+    maxfiyKod(process.env.TOKEN_AKOBIR_MOTHER_PHONE_2, ctx.message.text),
+    maxfiyKod(process.env.TOKEN_ISLOM, ctx.message.text),
+    maxfiyKod(process.env.TOKEN, ctx.message.text),
+    maxfiyKod(process.env.TOKEN_NARGIZA, ctx.message.text),
+  ]);
+
+  // const data = await maxfiyKod(process.env.TOKEN_ISLOM, ctx.message.text);
+  // console.log(loading.message_id)
+  ctx.deleteMessage(loading.message_id);
+  ctx.reply(`${"```" + JSON.stringify(data, null, 2) + "```"}`, {
+    parse_mode: "MarkdownV2",
+  });
+});

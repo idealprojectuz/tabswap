@@ -1,4 +1,5 @@
 const axios = require("axios");
+const { response } = require("express");
 const humster = async (token) => {
   try {
     let data = {
@@ -110,7 +111,7 @@ const hamsterFullEnergy = async (token) => {
   }
 };
 
-const dailybonus = async (token) => {
+const dailybonus = async (token, taskId) => {
   try {
     const config = {
       url: "https://api.hamsterkombat.io/clicker/check-task",
@@ -129,7 +130,7 @@ const dailybonus = async (token) => {
       },
       method: "POST",
       data: {
-        taskId: "streak_days",
+        taskId: taskId,
       },
     };
     const response = await axios(config);
@@ -144,7 +145,77 @@ const dailybonus = async (token) => {
   }
 };
 
-module.exports = { humster, hamsterSync, hamsterFullEnergy, dailybonus };
+const maxfiyKod = async (token, kod) => {
+  const config = {
+    url: "https://api.hamsterkombat.io/clicker/claim-daily-cipher",
+    headers: {
+      accept: "application/json",
+      "accept-language": "en-US,en;q=0.9,uz;q=0.8",
+      authorization: "Bearer " + token,
+      "cache-control": "no-cache",
+      "content-type": "application/json",
+      pragma: "no-cache",
+      "sec-fetch-dest": "empty",
+      "sec-fetch-mode": "cors",
+      "sec-fetch-site": "same-site",
+      Referer: "https://hamsterkombat.io/",
+      "Referrer-Policy": "strict-origin-when-cross-origin",
+    },
+    method: "POST",
+    data: {
+      cipher: kod,
+    },
+  };
+  try {
+    const response = await axios(config);
+    if (response.status == 200 || response.status == 201) {
+      const { clickerUser, dailyCipher } = response.data;
+      const data = {
+        userId: clickerUser.id,
+        ...dailyCipher,
+      };
+      return data;
+    }
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
+const listTask = async (token) => {
+  const config = {
+    url: "https://api.hamsterkombat.io/clicker/list-tasks",
+    method: "POST",
+    headers: {
+      authorization: "Bearer " + token,
+      "User-Agent":
+        "Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1",
+    },
+  };
+  try {
+    const response = await axios(config);
+    if (response.status == 200 || response.status == 201) {
+      const { tasks } = response.data;
+      let notComplated = tasks.filter((el) => el.isCompleted == false);
+      const returned = notComplated.map(async (el) => {
+        return await dailybonus(token, el.id);
+      });
+
+      return await Promise.all(returned);
+      // return tasks;
+    }
+  } catch (error) {
+    return error.response.data;
+  }
+};
+
+module.exports = {
+  humster,
+  hamsterSync,
+  hamsterFullEnergy,
+  dailybonus,
+  maxfiyKod,
+  listTask,
+};
 // getCoin().then((data) => console.log(data));
 // getCoin().then((data) => console.log(data));
 
