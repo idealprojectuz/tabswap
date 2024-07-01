@@ -101,7 +101,7 @@ bot.start((ctx) => ctx.reply("Hamster maxfiy kodini kiriting..."));
 bot.on("message", async (ctx) => {
   const loading = await ctx.reply("⏳");
   const account_list = accounts.map(
-    async (el) => await maxfiyKod(el.token, ctx.message.text)
+    async (el) => await maxfiyKod(el.token, ctx.message.text.toUpperCase())
   );
   const data = await Promise.all(account_list);
 
