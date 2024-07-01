@@ -10,12 +10,14 @@ const {
 const pixel = require("./pixel");
 const os = require("os");
 const { Telegraf } = require("telegraf");
+const fs = require("fs");
+const path = require("path");
 // const axios = require("axios");
+const accounts = require("./accounts.json");
 const express = require("express");
 const bot = new Telegraf(process.env.BOT_TOKEN);
 
 const app = express();
-
 app.use(express.json());
 
 // webhook
@@ -27,19 +29,23 @@ const url = process.env.RENDER_EXTERNAL_URL || process.env.WEBHOOK;
 bot.telegram.setWebhook(url + "/webhook");
 
 app.get("/", async (req, res) => {
+  const account_list = accounts.map(async (el) => await humster(el.token));
+
   const result = await Promise.all([
-    humster(process.env.TOKEN_HAYOTBEK),
-    humster(process.env.TOKEN_NODIRA),
-    humster(process.env.TOKEN_SAMANDAR),
-    humster(process.env.TOKEN_THAILAND),
-    humster(process.env.TOKEN_HAYOTBEK_OLD),
-    humster(process.env.TOKEN_JAVOHIR),
-    humster(process.env.TOKEN_AKOBIR),
-    humster(process.env.TOKEN_AKOBIR_MOTHER),
-    humster(process.env.TOKEN_AKOBIR_MOTHER_PHONE_2),
-    humster(process.env.TOKEN_ISLOM),
-    humster(process.env.TOKEN),
-    humster(process.env.TOKEN_NARGIZA),
+    ...account_list,
+    // humster(process.env.TOKEN_HAYOTBEK),
+    // humster(process.env.TOKEN_NODIRA),
+    // humster(process.env.TOKEN_SAMANDAR),
+    // humster(process.env.TOKEN_THAILAND),
+    // humster(process.env.TOKEN_HAYOTBEK_OLD),
+    // humster(process.env.TOKEN_JAVOHIR),
+    // humster(process.env.TOKEN_AKOBIR),
+    // humster(process.env.TOKEN_AKOBIR_MOTHER),
+    // humster(process.env.TOKEN_AKOBIR_MOTHER_PHONE_2),
+    // humster(process.env.TOKEN_ISLOM),
+    // humster(process.env.TOKEN),
+    // humster(process.env.TOKEN_NARGIZA),
+
     pixel(),
   ]);
   res.writeHead(200, "ok", { "Content-Type": "application/json" });
@@ -48,20 +54,9 @@ app.get("/", async (req, res) => {
 
 //every one hour
 app.get("/sync", async (_, res) => {
-  const result = await Promise.all([
-    hamsterSync(process.env.TOKEN_HAYOTBEK),
-    hamsterSync(process.env.TOKEN_NODIRA),
-    hamsterSync(process.env.TOKEN_SAMANDAR),
-    hamsterSync(process.env.TOKEN_THAILAND),
-    hamsterSync(process.env.TOKEN_HAYOTBEK_OLD),
-    hamsterSync(process.env.TOKEN_JAVOHIR),
-    hamsterSync(process.env.TOKEN_AKOBIR),
-    hamsterSync(process.env.TOKEN_AKOBIR_MOTHER),
-    hamsterSync(process.env.TOKEN_AKOBIR_MOTHER_PHONE_2),
-    hamsterSync(process.env.TOKEN_ISLOM),
-    hamsterSync(process.env.TOKEN),
-    hamsterSync(process.env.TOKEN_NARGIZA),
-  ]);
+  const account_list = accounts.map(async (el) => await hamsterSync(el.token));
+
+  const result = await Promise.all(account_list);
   return res.json(result);
 });
 
@@ -72,40 +67,19 @@ app.get("/sync", async (_, res) => {
 
 //every one hour
 app.get("/fullenergy", async (_, res) => {
-  const result = await Promise.all([
-    hamsterFullEnergy(process.env.TOKEN_HAYOTBEK),
-    hamsterFullEnergy(process.env.TOKEN_NODIRA),
-    hamsterFullEnergy(process.env.TOKEN_SAMANDAR),
-    hamsterFullEnergy(process.env.TOKEN_THAILAND),
-    hamsterFullEnergy(process.env.TOKEN_HAYOTBEK_OLD),
-    hamsterFullEnergy(process.env.TOKEN_JAVOHIR),
-    hamsterFullEnergy(process.env.TOKEN_AKOBIR),
-    hamsterFullEnergy(process.env.TOKEN_AKOBIR_MOTHER),
-    hamsterFullEnergy(process.env.TOKEN_AKOBIR_MOTHER_PHONE_2),
-    hamsterFullEnergy(process.env.TOKEN_ISLOM),
-    hamsterFullEnergy(process.env.TOKEN),
-    hamsterFullEnergy(process.env.TOKEN_NARGIZA),
-  ]);
+  const account_list = accounts.map(
+    async (el) => await hamsterFullEnergy(el.token)
+  );
+
+  const result = await Promise.all(account_list);
   return res.json(result);
 });
 // app.get('/')
 
 //every  day
 app.get("/dailybonus", async (_, res) => {
-  const result = await Promise.all([
-    listTask(process.env.TOKEN_HAYOTBEK),
-    listTask(process.env.TOKEN_NODIRA),
-    listTask(process.env.TOKEN_SAMANDAR),
-    listTask(process.env.TOKEN_THAILAND),
-    listTask(process.env.TOKEN_HAYOTBEK_OLD),
-    listTask(process.env.TOKEN_JAVOHIR),
-    listTask(process.env.TOKEN_AKOBIR),
-    listTask(process.env.TOKEN_AKOBIR_MOTHER),
-    listTask(process.env.TOKEN_AKOBIR_MOTHER_PHONE_2),
-    listTask(process.env.TOKEN_ISLOM),
-    listTask(process.env.TOKEN),
-    listTask(process.env.TOKEN_NARGIZA),
-  ]);
+  const account_list = accounts.map(async (el) => await listTask(el.token));
+  const result = await Promise.all(account_list);
   return res.json(result);
 });
 
@@ -126,21 +100,10 @@ bot.start((ctx) => ctx.reply("Hamster maxfiy kodini kiriting..."));
 
 bot.on("message", async (ctx) => {
   const loading = await ctx.reply("⏳");
-
-  const data = await Promise.all([
-    maxfiyKod(process.env.TOKEN_HAYOTBEK, ctx.message.text),
-    maxfiyKod(process.env.TOKEN_NODIRA, ctx.message.text),
-    maxfiyKod(process.env.TOKEN_SAMANDAR, ctx.message.text),
-    maxfiyKod(process.env.TOKEN_THAILAND, ctx.message.text),
-    maxfiyKod(process.env.TOKEN_HAYOTBEK_OLD, ctx.message.text),
-    maxfiyKod(process.env.TOKEN_JAVOHIR, ctx.message.text),
-    maxfiyKod(process.env.TOKEN_AKOBIR, ctx.message.text),
-    maxfiyKod(process.env.TOKEN_AKOBIR_MOTHER, ctx.message.text),
-    maxfiyKod(process.env.TOKEN_AKOBIR_MOTHER_PHONE_2, ctx.message.text),
-    maxfiyKod(process.env.TOKEN_ISLOM, ctx.message.text),
-    maxfiyKod(process.env.TOKEN, ctx.message.text),
-    maxfiyKod(process.env.TOKEN_NARGIZA, ctx.message.text),
-  ]);
+  const account_list = accounts.map(
+    async (el) => await maxfiyKod(el.token, ctx.message.text)
+  );
+  const data = await Promise.all(account_list);
 
   // const data = await maxfiyKod(process.env.TOKEN_ISLOM, ctx.message.text);
   // console.log(loading.message_id)

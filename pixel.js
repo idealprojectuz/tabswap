@@ -33,7 +33,7 @@ const pixel = async () => {
     const response = await axios(config);
     return response.data;
   } catch (error) {
-    console.log(error.response.data);
+    return error.response.data;
   }
 };
 module.exports = pixel;
