@@ -4,27 +4,46 @@ const humster = async (token) => {
   try {
     let data = {
       count: 10000,
-      availableTaps: 10000,
+      availableTaps: 12500,
       timestamp: Date.now(),
     };
     let config = {
       method: "post",
       maxBodyLength: Infinity,
-      url: "https://api.hamsterkombat.io/clicker/tap",
+
+      url: "https://api.hamsterkombatgame.io/clicker/tap",
+      // headers: {
+      //   Authorization: "Bearer " + token,
+      //   Host: "api.hamsterkombatgamegame.io",
+      //   Accept: "application/json",
+      //   "Sec-Fetch-Site": "same-site",
+      //   "Accept-Language": "uz,en-GB;q=0.9,en;q=0.8",
+      //   "Sec-Fetch-Mode": "cors",
+      //   Origin: "https://hamsterkombatgame.io",
+      //   "User-Agent":
+      //     "Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148",
+      //   Referer: "https://hamsterkombatgame.io",
+      //   Connection: "keep-alive",
+      //   "Sec-Fetch-Dest": "empty",
+      //   "Content-Type": "application/json",
+      // },
       headers: {
-        Authorization: "Bearer " + token,
-        Host: "api.hamsterkombat.io",
-        Accept: "application/json",
-        "Sec-Fetch-Site": "same-site",
-        "Accept-Language": "uz,en-GB;q=0.9,en;q=0.8",
-        "Sec-Fetch-Mode": "cors",
-        Origin: "https://hamsterkombat.io",
-        "User-Agent":
-          "Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148",
-        Referer: "https://hamsterkombat.io/",
-        Connection: "keep-alive",
-        "Sec-Fetch-Dest": "empty",
-        "Content-Type": "application/json",
+        accept: "application/json",
+        "accept-language": "en-US,en;q=0.9,uz;q=0.8",
+        authorization: "Bearer " + token,
+        "content-type": "application/json",
+        origin: "https://hamsterkombatgame.io",
+        priority: "u=1, i",
+        referer: "https://hamsterkombatgame.io/",
+        "sec-ch-ua":
+          '"Not/A)Brand";v="8", "Chromium";v="126", "Google Chrome";v="126"',
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": '"Windows"',
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-site",
+        "user-agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
       },
       data: data,
     };
@@ -39,7 +58,7 @@ const humster = async (token) => {
       };
     }
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
     // getCoin();
   }
 };
@@ -49,7 +68,7 @@ const hamsterSync = async (token) => {
     let config = {
       method: "post",
       maxBodyLength: Infinity,
-      url: "https://api.hamsterkombat.io/clicker/sync",
+      url: "https://api.hamsterkombatgame.io/clicker/sync",
       headers: {
         accept: "*/*",
         "accept-language": "en-US,en;q=0.9,uz;q=0.8",
@@ -76,17 +95,17 @@ const hamsterSync = async (token) => {
 const hamsterFullEnergy = async (token) => {
   try {
     const config = {
-      url: "https://api.hamsterkombat.io/clicker/buy-boost",
+      url: "https://api.hamsterkombatgame.io/clicker/buy-boost",
       headers: {
-        Host: "api.hamsterkombat.io",
+        Host: "api.hamsterkombatgame.io",
         Accept: "application/json",
         "Sec-Fetch-Site": "same-site",
         "Accept-Language": "uz,en-GB;q=0.9,en;q=0.8",
         "Sec-Fetch-Mode": "cors",
-        Origin: "https://hamsterkombat.io",
+        Origin: "https://hamsterkombatgame.io",
         "User-Agent":
           "Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148",
-        Referer: "https://hamsterkombat.io/",
+        Referer: "https://hamsterkombatgame.io/",
         Connection: "keep-alive",
         "Sec-Fetch-Dest": "empty",
         Authorization: "Bearer " + token,
@@ -114,7 +133,7 @@ const hamsterFullEnergy = async (token) => {
 const dailybonus = async (token, taskId) => {
   try {
     const config = {
-      url: "https://api.hamsterkombat.io/clicker/check-task",
+      url: "https://api.hamsterkombatgame.io/clicker/check-task",
       headers: {
         accept: "application/json",
         "accept-language": "en-US,en;q=0.9",
@@ -125,7 +144,7 @@ const dailybonus = async (token, taskId) => {
         "sec-fetch-dest": "empty",
         "sec-fetch-mode": "cors",
         "sec-fetch-site": "same-site",
-        Referer: "https://hamsterkombat.io/",
+        Referer: "https://hamsterkombatgame.io/",
         "Referrer-Policy": "strict-origin-when-cross-origin",
       },
       method: "POST",
@@ -147,7 +166,7 @@ const dailybonus = async (token, taskId) => {
 
 const maxfiyKod = async (token, kod) => {
   const config = {
-    url: "https://api.hamsterkombat.io/clicker/claim-daily-cipher",
+    url: "https://api.hamsterkombatgame.io/clicker/claim-daily-cipher",
     headers: {
       accept: "application/json",
       "accept-language": "en-US,en;q=0.9,uz;q=0.8",
@@ -158,7 +177,7 @@ const maxfiyKod = async (token, kod) => {
       "sec-fetch-dest": "empty",
       "sec-fetch-mode": "cors",
       "sec-fetch-site": "same-site",
-      Referer: "https://hamsterkombat.io/",
+      Referer: "https://hamsterkombatgame.io/",
       "Referrer-Policy": "strict-origin-when-cross-origin",
     },
     method: "POST",
@@ -183,7 +202,7 @@ const maxfiyKod = async (token, kod) => {
 
 const listTask = async (token) => {
   const config = {
-    url: "https://api.hamsterkombat.io/clicker/list-tasks",
+    url: "https://api.hamsterkombatgame.io/clicker/list-tasks",
     method: "POST",
     headers: {
       authorization: "Bearer " + token,
